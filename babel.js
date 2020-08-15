@@ -1,7 +1,7 @@
 // babel.js - webdeploy build plugin
 
 const { format } = require("util");
-const babel = require("babel-core");
+const babel = require("@babel/core");
 
 async function loadBabelPackage(installer,type,map,plugin) {
     var ref, options;
@@ -19,7 +19,7 @@ async function loadBabelPackage(installer,type,map,plugin) {
         return plugin;
     }
 
-    var prefix = format("babel-%s-",type);
+    var prefix = format("%s-",type);
 
     // Attempt to parse the plugin/preset reference string.
     var match = ref.match(format("^(@[^/]+/)?(%s)?(.+)(@)(.+)$",prefix));
@@ -27,7 +27,11 @@ async function loadBabelPackage(installer,type,map,plugin) {
         throw new Error(format("Invalid babel plugin reference: %s",ref));
     }
 
-    match[2] = prefix;
+    if (!match[1]) {
+        match[1] = '@babel/';
+        match[2] = prefix;
+    }
+    match = match.filter((x) => !!x);
     ref = match.slice(1).join("");
 
     if (map.has(ref)) {

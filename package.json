@@ -10,6 +10,6 @@
   "author": "Roger Gee",
   "license": "MIT",
   "dependencies": {
-    "babel-core": "6.26.3"
+    "@babel/core": "7.11.1"
   }
 }
