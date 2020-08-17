@@ -35,7 +35,7 @@ async function loadBabelPackage(installer,type,map,plugin) {
     ref = match.slice(1).join("");
 
     if (map.has(ref)) {
-        return m.get(ref);
+        return [m.get(ref),options];
     }
 
     var packageName = match.slice(1,4).join("");
@@ -63,7 +63,7 @@ async function loadBabelPackage(installer,type,map,plugin) {
 
     map.set(ref,pluginModule);
 
-    return pluginModule;
+    return [pluginModule,options];
 }
 
 module.exports = {
