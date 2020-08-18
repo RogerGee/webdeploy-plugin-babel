@@ -87,6 +87,10 @@ module.exports = {
     },
 
     audit: async (context,settingsList) => {
+        if (!settingsList.some((settings) => !!settings.plugins || !!settings.presets)) {
+            return;
+        }
+
         let plugins = new Map();
         let presets = new Map();
 
@@ -103,6 +107,13 @@ module.exports = {
             npmRegistries: [
                 'https://registry.npmjs.org/'
             ]
+        });
+
+        var logged = false;
+        installer.once(() => {
+            context.log("Installing required babel packages");
+            context.beginLog();
+            logged = true;
         });
 
         // Load plugins and presets. This replaces each string reference with a
@@ -132,6 +143,10 @@ module.exports = {
                     );
                 }
             }
+        }
+
+        if (logged) {
+            context.endLog();
         }
     }
 };
