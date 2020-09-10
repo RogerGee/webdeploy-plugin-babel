@@ -1,7 +1,27 @@
 // babel.js - webdeploy build plugin
 
+const Module = require("module");
 const { format } = require("util");
 const babel = require("@babel/core");
+
+function hijack_plugin_require(basePath) {
+    const oldfn = Module.prototype.require;
+
+    // Let the babel plugin load our globally-installed babel core.
+    Module.prototype.require = function(file) {
+        if (file == "@babel/core") {
+            return babel;
+        }
+
+        return oldfn.apply(this,arguments);
+    };
+
+    return oldfn;
+}
+
+function restore_plugin_require(fn) {
+    Module.prototype.require = fn;
+}
 
 async function loadBabelPackage(installer,type,map,plugin) {
     var ref, options;
@@ -45,9 +65,9 @@ async function loadBabelPackage(installer,type,map,plugin) {
         installer.installPackage(
             packageName,
             packageVersion,
-            (result) => {
+            (pack) => {
                 try {
-                    resolve(installer.require());
+                    resolve(pack.require());
                 } catch (err) {
                     reject(err);
                 }
@@ -98,15 +118,11 @@ module.exports = {
             installPath: await context.makeCachePath("modules"),
             logger: context.logger,
             overwrite: false,
+            downloadViaNPM: true,
 
             // Disallow running scripts on Babel plugins when they are
             // installed.
-            noscripts: true,
-
-            // TODO Allow registries to be configured.
-            npmRegistries: [
-                'https://registry.npmjs.org/'
-            ]
+            noscripts: true
         });
 
         var logged = false;
@@ -115,6 +131,8 @@ module.exports = {
             context.beginLog();
             logged = true;
         });
+
+        const oldRequire = hijack_plugin_require();
 
         // Load plugins and presets. This replaces each string reference with a
         // loaded node module corresponding to the downloaded babel
@@ -144,6 +162,8 @@ module.exports = {
                 }
             }
         }
+
+        restore_plugin_require(oldRequire);
 
         if (logged) {
             context.endLog();
