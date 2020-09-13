@@ -4,7 +4,7 @@ const Module = require("module");
 const { format } = require("util");
 const babel = require("@babel/core");
 
-function hijack_plugin_require(basePath) {
+function hijack_plugin_require() {
     const oldfn = Module.prototype.require;
 
     // Let the babel plugin load our globally-installed babel core.
