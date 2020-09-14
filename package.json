@@ -1,15 +1,17 @@
 {
   "name": "@webdeploy/plugin-babel",
-  "version": "1.1.0",
+  "version": "2.0.0-dev",
   "description": "Webdeploy babel plugin",
   "main": "babel.js",
   "repository": {
     "type": "git",
-    "url": "https://tccl-apps/git/webdeploy/babel.git"
+    "url": "https://github.com/RogerGee/webdeploy-plugin-babel.git"
   },
   "author": "Roger Gee",
   "license": "MIT",
-  "dependencies": {
-    "@babel/core": "7.11.1"
-  }
+  "dependencies": {},
+  "peerDependencies": {
+    "@babel/core": "^7.0.0"
+  },
+  "devDependencies": {}
 }
