@@ -5,7 +5,7 @@
   "main": "babel.js",
   "repository": {
     "type": "git",
-    "url": "https://tccl-apps/git/webdeploy/babel.git"
+    "url": "https://github.com/RogerGee/webdeploy-plugin-babel.git"
   },
   "author": "Roger Gee",
   "license": "MIT",
