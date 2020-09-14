@@ -8,7 +8,7 @@ module.exports = {
         const code = await target.loadContent();
         const babelOptions = {
             // Make babel work under the webdeploy project base path.
-            cwd: context.basePath,
+            cwd: context.nodeModules,
 
             presets: settings.presets || [],
             plugins: settings.plugins || []
