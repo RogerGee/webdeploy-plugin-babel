@@ -5,7 +5,7 @@
 ## Install
 
 ~~~
-npm install @webdeploy/plugin-babel @babel/core [plugins...]
+npm install --save-dev @webdeploy/plugin-babel @babel/core [plugins...]
 ~~~
 
 ## Config
